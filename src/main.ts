@@ -1,3 +1,3 @@
-import "@infrastructure/http/server";
+import '@infrastructure/http/server'
 
-import "@infrastructure/prisma/client";
+import '@infrastructure/prisma/client'

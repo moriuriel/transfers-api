@@ -1,39 +1,13 @@
-import Fastify, { FastifyInstance, RouteShorthandOptions } from "fastify";
+import express from 'express'
 
-const server: FastifyInstance = Fastify({
-  logger: true,
-});
+import 'express-async-errors'
+import { router } from './routes'
 
-const opts: RouteShorthandOptions = {
-  schema: {
-    response: {
-      200: {
-        type: "object",
-        properties: {
-          pong: {
-            type: "string",
-          },
-        },
-      },
-    },
-  },
-};
+const server = express()
 
-server.get("/ping", opts, async (request, reply) => {
-  return { pong: "it worked!" };
-});
+server.use(express.json())
+server.use(router)
 
-const start = async () => {
-  try {
-    await server.listen({ port: 3001 });
-
-    const address = server.server.address();
-    const port = typeof address === "string" ? address : address?.port;
-    console.log("Server HTTP is running 3001!");
-  } catch (err) {
-    server.log.error(err);
-    process.exit(1);
-  }
-};
-
-start();
+server.listen(3001, () => {
+   console.log('Transfer running!')
+})
