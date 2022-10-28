@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id
+  name         String
+  document     String   @unique
+  email        String   @unique
+  password     String
+  can_transfer Boolean
+  created_at   DateTime
+  wallet       Wallet   @relation(fields: [wallet_id], references: [id])
+  wallet_id    String
+
+  @@map(name: "users")
+}
+
+model Wallet {
+  id         String   @id
+  money      Decimal
+  created_at DateTime
+  User       User[]
+
+  @@map(name: "wallets")
+}
