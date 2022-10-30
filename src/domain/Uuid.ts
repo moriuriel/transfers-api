@@ -1,4 +1,4 @@
-import uuid from 'uuid'
+import * as uuid from 'uuid'
 interface IUUID {
   newUUID(): string
   isValidUUID(value: string): boolean
