@@ -1,20 +1,35 @@
-import { UUID } from 'src/domain/Uuid'
-import { IUser, User } from '../domain'
+import { UUID } from '@domain/Uuid'
+import { User, UserType, Wallet } from '../domain'
+import { IUserRepository } from '../domain/repository'
 import { ICreateUserInput, ICreateUserUsecase } from '../domain/usecase'
 
 export class CreateUserUsecase implements ICreateUserUsecase {
+  private readonly userRepo: IUserRepository
+  constructor(userRepo: IUserRepository) {
+    this.userRepo = userRepo
+  }
+
   async execute(input: ICreateUserInput): Promise<User> {
-    const userID = new UUID().newUUID()
+    const userCanTransfer = UserType[input.user_type] === UserType.CLIENT
+
+    const wallet = new Wallet({
+      id: new UUID().newUUID(),
+      created_at: new Date(Date.now()).toISOString(),
+      money: 0,
+    })
 
     const user = new User({
-      id: userID,
+      id: new UUID().newUUID(),
       name: input.name,
       email: input.email,
       document: input.document,
       created_at: new Date(Date.now()).toISOString(),
       password: input.password,
-      can_transfer: true,
+      can_transfer: userCanTransfer,
+      wallet_id: wallet.id(),
     })
+
+    await this.userRepo.create(user)
 
     return user
   }
