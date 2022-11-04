@@ -11,7 +11,6 @@ export interface IWallet {
   createdAt(): string
   deposit(amount: number)
   withdraw(amount: number)
-  fixed(money: number): number
 }
 
 export class Wallet implements IWallet {
@@ -34,10 +33,6 @@ export class Wallet implements IWallet {
   }
   createdAt(): string {
     return this.wallet.created_at
-  }
-
-  fixed(money: number): number {
-    return (money * 100) / 100
   }
 
   deposit(amount: number) {

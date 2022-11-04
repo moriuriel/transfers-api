@@ -3,18 +3,29 @@ import { AppError } from '@infrastructure/http/errors'
 import { StatusCodes } from 'http-status-codes'
 import { User, UserType, Wallet } from '../domain'
 import { IUserRepository, IWalletRepository } from '../domain/repository'
-import { ICreateUserInput, ICreateUserUsecase } from '../domain/usecase'
+import {
+  ICreateUserInput,
+  ICreateUserOutput,
+  ICreateUserPresenter,
+  ICreateUserUsecase,
+} from '../domain/usecase'
 
 export class CreateUserUsecase implements ICreateUserUsecase {
   private readonly userRepo: IUserRepository
   private readonly walletRepo: IWalletRepository
+  private readonly presenter: ICreateUserPresenter
 
-  constructor(userRepo: IUserRepository, walletRepo: IWalletRepository) {
+  constructor(
+    userRepo: IUserRepository,
+    walletRepo: IWalletRepository,
+    presenter: ICreateUserPresenter
+  ) {
     this.userRepo = userRepo
     this.walletRepo = walletRepo
+    this.presenter = presenter
   }
 
-  async execute(input: ICreateUserInput): Promise<User> {
+  async execute(input: ICreateUserInput): Promise<ICreateUserOutput> {
     const userCanTransfer = UserType[input.user_type] === UserType.CLIENT
 
     const isDocumentInUse = await this.userRepo.findByDocument(input.document)
@@ -49,12 +60,12 @@ export class CreateUserUsecase implements ICreateUserUsecase {
     const wallet = new Wallet({
       id: new UUID().newUUID(),
       created_at: new Date(Date.now()).toISOString(),
-      money: 0,
+      money: input.money,
       user_id: user.id(),
     })
 
     await this.walletRepo.create(wallet)
 
-    return user
+    return this.presenter.output(user, wallet)
   }
 }
