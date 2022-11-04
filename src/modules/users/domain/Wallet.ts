@@ -1,3 +1,6 @@
+import { AppError } from '@infrastructure/http/errors'
+import { StatusCodes } from 'http-status-codes'
+
 export interface IWalletProps {
   id: string
   money: number
@@ -41,7 +44,10 @@ export class Wallet implements IWallet {
 
   withdraw(amount: number) {
     if (amount > this.wallet.money) {
-      throw new Error('not enough balance')
+      throw new AppError({
+        statusCode: StatusCodes.UNPROCESSABLE_ENTITY,
+        message: 'not enough balance',
+      })
     }
     this.wallet.money -= amount
   }

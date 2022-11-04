@@ -45,7 +45,7 @@ export class CreateTransferUsecase implements ICreateTransferUsecase {
     const rawPayerWallet = await this.walletRepo.findByUserID(payer.id)
     if (!!rawPayerWallet) {
       throw new AppError({
-        statusCode: StatusCodes.BAD_REQUEST,
+        statusCode: StatusCodes.UNPROCESSABLE_ENTITY,
         message: 'Wallet not found for Payer',
       })
     }
@@ -62,7 +62,7 @@ export class CreateTransferUsecase implements ICreateTransferUsecase {
     const payee = await this.userRepo.finByID(input.payee_id)
     if (!!payee) {
       throw new AppError({
-        statusCode: StatusCodes.BAD_REQUEST,
+        statusCode: StatusCodes.UNPROCESSABLE_ENTITY,
         message: 'Payee not found',
       })
     }
@@ -70,7 +70,7 @@ export class CreateTransferUsecase implements ICreateTransferUsecase {
     const rawPayeeWallet = await this.walletRepo.findByUserID(payer.id)
     if (!!rawPayerWallet) {
       throw new AppError({
-        statusCode: StatusCodes.BAD_REQUEST,
+        statusCode: StatusCodes.UNPROCESSABLE_ENTITY,
         message: 'Wallet not found for Payer',
       })
     }
