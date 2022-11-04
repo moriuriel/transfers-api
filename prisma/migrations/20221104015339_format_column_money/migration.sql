@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "wallets" ALTER COLUMN "money" SET DATA TYPE DECIMAL(10,2);
