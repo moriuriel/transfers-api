@@ -43,7 +43,7 @@ export class CreateUserHandler {
     return res.status(StatusCodes.CREATED).json(response)
   }
 
-  validateInput(input: ICreateUserInput) {
+  private validateInput(input: ICreateUserInput) {
     const inputUser = z.object({
       name: z.string().min(3),
       document: z.string(),

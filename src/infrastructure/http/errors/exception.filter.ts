@@ -1,3 +1,4 @@
+import { WinstonLog } from '@infrastructure/log/winston.log'
 import { NextFunction, Request, Response } from 'express'
 import { StatusCodes } from 'http-status-codes'
 import { ZodError } from 'zod'
@@ -9,6 +10,10 @@ function exceptionFilter(
   response: Response,
   _: NextFunction
 ) {
+  const log = WinstonLog.newLogger()
+
+  log.error(err)
+
   if (err instanceof AppError) {
     return response.status(err.statusCode).json({
       status: 'error',
