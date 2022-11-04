@@ -18,17 +18,18 @@ model User {
   password     String
   can_transfer Boolean
   created_at   DateTime
-  wallet       Wallet   @relation(fields: [wallet_id], references: [id])
-  wallet_id    String
+  Wallet       Wallet?
 
   @@map(name: "users")
 }
 
 model Wallet {
-  id         String   @id
-  money      Decimal
+  id      String  @id
+  money   Decimal
+  user    User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id String  @unique
+
   created_at DateTime
-  User       User[]
 
   @@map(name: "wallets")
 }

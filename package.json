@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev -r tsconfig-paths/register --respawn  --no-notify src/main.ts",
+    "dev": "tsx watch src/main.ts",
     "prepare": "husky install"
   },
   "devDependencies": {

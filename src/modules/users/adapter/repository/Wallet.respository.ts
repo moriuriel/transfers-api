@@ -8,6 +8,7 @@ export class WalletRepository implements IWalletRepository {
       data: {
         id: wallet.id(),
         money: wallet.money(),
+        user_id: wallet.userId(),
         created_at: wallet.createdAt(),
       },
     })

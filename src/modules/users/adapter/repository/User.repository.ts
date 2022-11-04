@@ -1,5 +1,5 @@
 import { prisma } from '@infrastructure/prisma/client'
-import { User } from '@modules/users/domain'
+import { IUser, User } from '@modules/users/domain'
 import { IUserRepository } from '@modules/users/domain/repository'
 
 export class UserRepository implements IUserRepository {
@@ -12,11 +12,18 @@ export class UserRepository implements IUserRepository {
         email: user.email(),
         password: user.password(),
         can_transfer: user.canTransfer(),
-        wallet_id: user.walletID(),
         created_at: user.createdAt(),
       },
     })
 
     return user
+  }
+
+  async findByDocument(document: string): Promise<IUser> {
+    return prisma.user.findFirst({ where: { document } })
+  }
+
+  async findByEmail(email: string): Promise<IUser> {
+    return prisma.user.findFirst({ where: { email } })
   }
 }

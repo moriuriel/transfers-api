@@ -5,8 +5,7 @@ export interface IUser {
   email: string
   password: string
   can_transfer: boolean
-  wallet_id: string
-  created_at: string
+  created_at: string | Date
 }
 
 export enum UserType {
@@ -44,11 +43,7 @@ export class User {
     return this.user.can_transfer
   }
 
-  walletID(): string {
-    return this.user.wallet_id
-  }
-
-  createdAt(): string {
+  createdAt(): string | Date {
     return this.user.created_at
   }
 }
