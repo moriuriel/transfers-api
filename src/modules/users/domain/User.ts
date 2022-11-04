@@ -1,4 +1,4 @@
-export interface IUser {
+export interface IUserProps {
   id: string
   name: string
   document: string
@@ -13,9 +13,9 @@ export enum UserType {
   CLIENT = 'CLIENT',
 }
 export class User {
-  public readonly user: IUser
+  public readonly user: IUserProps
 
-  constructor(props: IUser) {
+  constructor(props: IUserProps) {
     this.user = props
   }
 
