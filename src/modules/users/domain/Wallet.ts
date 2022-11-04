@@ -2,13 +2,13 @@ export interface IWalletProps {
   id: string
   money: number
   user_id: string
-  created_at: string
+  created_at: string | Date
 }
 
 export interface IWallet {
   id(): string
   money(): number
-  createdAt(): string
+  createdAt(): string | Date
   deposit(amount: number)
   withdraw(amount: number)
 }
@@ -31,7 +31,7 @@ export class Wallet implements IWallet {
   money(): number {
     return this.wallet.money
   }
-  createdAt(): string {
+  createdAt(): string | Date {
     return this.wallet.created_at
   }
 

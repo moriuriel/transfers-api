@@ -2,7 +2,7 @@ export interface ITransferProps {
   id: string
   payee_id: string
   payer_id: string
-  amount: string
+  amount: number
   created_at: string
 }
 
@@ -10,7 +10,7 @@ export interface ITransfer {
   id(): string
   payeeId(): string
   payerId(): string
-  amount(): string
+  amount(): number
   createdAt(): string
 }
 
@@ -33,7 +33,7 @@ export class Transfer implements ITransfer {
     return this.transfer.payer_id
   }
 
-  amount(): string {
+  amount(): number {
     return this.transfer.amount
   }
 

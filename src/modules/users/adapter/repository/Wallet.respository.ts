@@ -1,6 +1,6 @@
 import { prisma } from '@infrastructure/prisma/client'
 import { IWalletRepository } from '@modules/users/domain/repository'
-import { Wallet } from '@modules/users/domain/Wallet'
+import { IWalletProps, Wallet } from '@modules/users/domain/Wallet'
 
 export class WalletRepository implements IWalletRepository {
   async create(wallet: Wallet): Promise<Wallet> {
@@ -14,5 +14,16 @@ export class WalletRepository implements IWalletRepository {
     })
 
     return wallet
+  }
+
+  async findByUserID(userID: string): Promise<IWalletProps> {
+    const rawWallet = await prisma.wallet.findFirst({
+      where: { user_id: userID },
+    })
+
+    return {
+      ...rawWallet,
+      money: Number(rawWallet.money),
+    }
   }
 }

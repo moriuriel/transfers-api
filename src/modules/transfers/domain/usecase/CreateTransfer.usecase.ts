@@ -1,9 +1,9 @@
-import { User } from '@modules/users/domain'
+import { IUserProps, User } from '@modules/users/domain'
 
 export interface ICreateTransferInput {
   payee_id: string
   payer_id: string
-  amount: string
+  amount: number
 }
 
 export interface ICreateTransferOutput {
@@ -21,8 +21,8 @@ export interface ICreateTransferUsecase {
 export interface ICreateTransferPresenter {
   output(
     id: string,
-    payee: User,
-    payer: User,
+    payee: IUserProps,
+    payer: IUserProps,
     amount: number,
     created_at: string
   ): Promise<ICreateTransferOutput>
