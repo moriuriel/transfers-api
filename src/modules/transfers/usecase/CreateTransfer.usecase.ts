@@ -59,6 +59,8 @@ export class CreateTransferUsecase implements ICreateTransferUsecase {
 
     payerWallet.withdraw(input.amount)
 
+    await this.walletRepo.updateMoney(payerWallet)
+
     const payee = await this.userRepo.finByID(input.payee_id)
     if (!!payee) {
       throw new AppError({
@@ -83,6 +85,8 @@ export class CreateTransferUsecase implements ICreateTransferUsecase {
     })
 
     payeeWallet.deposit(input.amount)
+
+    await this.walletRepo.updateMoney(payeeWallet)
 
     const transfer = new Transfer({
       id: new UUID().newUUID(),
