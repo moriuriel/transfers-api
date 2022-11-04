@@ -1,6 +1,6 @@
 import { UUID } from '@domain/Uuid'
 import { AppError } from '@infrastructure/http/errors'
-import { User, Wallet } from '@modules/users/domain'
+import { Wallet } from '@modules/users/domain'
 import {
   IUserRepository,
   IWalletRepository,

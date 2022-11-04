@@ -10,7 +10,7 @@ export interface ICreateTransferOutput {
   id: string
   payee_name: string
   payer_name: string
-  amount: string
+  amount: number
   created_at: string
 }
 
@@ -25,5 +25,5 @@ export interface ICreateTransferPresenter {
     payer: IUserProps,
     amount: number,
     created_at: string
-  ): Promise<ICreateTransferOutput>
+  ): ICreateTransferOutput
 }
