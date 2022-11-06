@@ -1,3 +1,4 @@
+import { canTransfer } from '@adapter/api/middleware'
 import { CreateTransferUsecase } from '@modules/transfers/usecase/CreateTransfer.usecase'
 import { UserRepository } from '@modules/users/adapter/repository'
 import { WalletRepository } from '@modules/users/adapter/repository/Wallet.respository'
@@ -22,7 +23,7 @@ const createTransferUsecase = new CreateTransferUsecase(
 
 const createTransferHanlder = new CreateTransferHandler(createTransferUsecase)
 
-transferRouter.post('/', (req: Request, res: Response) => {
+transferRouter.post('/', canTransfer(), (req: Request, res: Response) => {
   return createTransferHanlder.handle(req, res)
 })
 
