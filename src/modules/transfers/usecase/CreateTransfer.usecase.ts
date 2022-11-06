@@ -1,4 +1,4 @@
-import { UUID } from '@domain/Uuid'
+import { UUID } from '@adapter/providers/id'
 import { AppError } from '@infrastructure/http/errors'
 import { Wallet } from '@modules/users/domain'
 import {

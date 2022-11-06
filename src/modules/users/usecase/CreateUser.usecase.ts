@@ -1,4 +1,5 @@
-import { UUID } from '@domain/Uuid'
+import { UUID } from '@adapter/providers/id'
+import IHashProvider from '@domain/providers/Hash'
 import { AppError } from '@infrastructure/http/errors'
 import { StatusCodes } from 'http-status-codes'
 import { User, UserType, Wallet } from '../domain'
@@ -14,15 +15,18 @@ export class CreateUserUsecase implements ICreateUserUsecase {
   private readonly userRepo: IUserRepository
   private readonly walletRepo: IWalletRepository
   private readonly presenter: ICreateUserPresenter
+  private readonly hashProvider: IHashProvider
 
   constructor(
     userRepo: IUserRepository,
     walletRepo: IWalletRepository,
-    presenter: ICreateUserPresenter
+    presenter: ICreateUserPresenter,
+    hashProvider: IHashProvider
   ) {
     this.userRepo = userRepo
     this.walletRepo = walletRepo
     this.presenter = presenter
+    this.hashProvider = hashProvider
   }
 
   async execute(input: ICreateUserInput): Promise<ICreateUserOutput> {
@@ -46,13 +50,15 @@ export class CreateUserUsecase implements ICreateUserUsecase {
       })
     }
 
+    const hashedPassword = await this.hashProvider.generateHash(input.password)
+
     const user = new User({
       id: new UUID().newUUID(),
       name: input.name,
       email: input.email,
       document: input.document,
       created_at: new Date(Date.now()).toISOString(),
-      password: input.password,
+      password: hashedPassword,
       can_transfer: userCanTransfer,
     })
     await this.userRepo.create(user)

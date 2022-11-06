@@ -1,8 +1,5 @@
 import * as uuid from 'uuid'
-interface IUUID {
-  newUUID(): string
-  isValidUUID(value: string): boolean
-}
+import { IUUID } from '@domain/providers/Uuid'
 
 export class UUID implements IUUID {
   newUUID(): string {
