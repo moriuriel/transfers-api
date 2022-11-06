@@ -1,9 +1,9 @@
 import { prisma } from '@infrastructure/prisma/client'
-import { Transfer, ITransfer } from '@modules/transfers/domain'
+import { Transfer, ITransferProps } from '@modules/transfers/domain'
 import { ITransferRepository } from '@modules/transfers/domain/repository/Transfer.repository'
 
 export class TransferRepository implements ITransferRepository {
-  async create(transfer: Transfer): Promise<ITransfer> {
+  async create(transfer: Transfer): Promise<Transfer> {
     await prisma.transfers.create({
       data: {
         id: transfer.id(),
@@ -15,5 +15,18 @@ export class TransferRepository implements ITransferRepository {
     })
 
     return transfer
+  }
+
+  async findByUserID(userID: string): Promise<ITransferProps[]> {
+    const transfers = await prisma.transfers.findMany({
+      where: {
+        payee_id: userID,
+        OR: {
+          payee_id: userID,
+        },
+      },
+    })
+
+    return transfers
   }
 }

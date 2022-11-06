@@ -1,5 +1,6 @@
-import { ITransfer, Transfer } from '../Transfer'
+import { ITransferProps, Transfer } from '../Transfer'
 
 export interface ITransferRepository {
-  create(transfer: Transfer): Promise<ITransfer>
+  create(transfer: Transfer): Promise<Transfer>
+  findByUserID(userID: string): Promise<ITransferProps[]>
 }
