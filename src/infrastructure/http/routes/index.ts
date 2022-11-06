@@ -1,3 +1,4 @@
+import { transferRouter } from '@modules/transfers/adapter/http/routes'
 import { userRouter } from '@modules/users/adapter/http/routes'
 import express, { Request, Response } from 'express'
 
@@ -11,5 +12,6 @@ router.get(
 )
 
 router.use('/users', userRouter)
+router.use('/transfers', transferRouter)
 
 export { router }

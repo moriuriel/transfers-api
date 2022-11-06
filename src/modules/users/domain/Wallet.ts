@@ -1,14 +1,17 @@
+import { AppError } from '@infrastructure/http/errors'
+import { StatusCodes } from 'http-status-codes'
+
 export interface IWalletProps {
   id: string
   money: number
   user_id: string
-  created_at: string
+  created_at: string | Date
 }
 
 export interface IWallet {
   id(): string
   money(): number
-  createdAt(): string
+  createdAt(): string | Date
   deposit(amount: number)
   withdraw(amount: number)
 }
@@ -31,17 +34,21 @@ export class Wallet implements IWallet {
   money(): number {
     return this.wallet.money
   }
-  createdAt(): string {
+
+  createdAt(): string | Date {
     return this.wallet.created_at
   }
 
-  deposit(amount: number) {
+  deposit(amount: number): void {
     this.wallet.money += amount
   }
 
-  withdraw(amount: number) {
+  withdraw(amount: number): void {
     if (amount > this.wallet.money) {
-      throw new Error('not enough balance')
+      throw new AppError({
+        statusCode: StatusCodes.UNPROCESSABLE_ENTITY,
+        message: 'not enough balance',
+      })
     }
     this.wallet.money -= amount
   }

@@ -1,4 +1,4 @@
-import { IUser, User, UserType } from '../User'
+import { IUserProps, User, UserType } from '../User'
 import { Wallet } from '../Wallet'
 
 export interface ICreateUserInput {
@@ -10,7 +10,7 @@ export interface ICreateUserInput {
   user_type: UserType
 }
 
-export interface ICreateUserOutput extends IUser {
+export interface ICreateUserOutput extends IUserProps {
   money: number
 }
 
