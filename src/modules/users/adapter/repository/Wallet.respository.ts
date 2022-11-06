@@ -27,7 +27,7 @@ export class WalletRepository implements IWalletRepository {
     }
   }
 
-  async updateMoney(wallet: Wallet): Promise<Wallet> {
+  async updateMoney(wallet: Wallet): Promise<void> {
     await prisma.wallet.update({
       where: {
         id: wallet.id(),
@@ -36,7 +36,5 @@ export class WalletRepository implements IWalletRepository {
         money: wallet.money(),
       },
     })
-
-    return wallet
   }
 }

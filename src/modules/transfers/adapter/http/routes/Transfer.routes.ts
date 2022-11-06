@@ -25,3 +25,5 @@ const createTransferHanlder = new CreateTransferHandler(createTransferUsecase)
 transferRouter.post('/', (req: Request, res: Response) => {
   return createTransferHanlder.handle(req, res)
 })
+
+export { transferRouter }

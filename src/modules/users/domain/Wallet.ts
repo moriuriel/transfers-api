@@ -34,15 +34,16 @@ export class Wallet implements IWallet {
   money(): number {
     return this.wallet.money
   }
+
   createdAt(): string | Date {
     return this.wallet.created_at
   }
 
-  deposit(amount: number) {
+  deposit(amount: number): void {
     this.wallet.money += amount
   }
 
-  withdraw(amount: number) {
+  withdraw(amount: number): void {
     if (amount > this.wallet.money) {
       throw new AppError({
         statusCode: StatusCodes.UNPROCESSABLE_ENTITY,

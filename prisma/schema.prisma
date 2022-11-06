@@ -13,9 +13,9 @@ datasource db {
 model Transfers {
   id         String   @id
   userPayer  User?    @relation("TransfersPayer", fields: [payer_id], references: [id])
-  payer_id   String?  @unique
+  payer_id   String
   userPayee  User?    @relation("TransfersPayee", fields: [payee_id], references: [id])
-  payee_id   String?  @unique
+  payee_id   String
   amount     Decimal  @db.Decimal(10, 2)
   created_at DateTime
 
@@ -23,16 +23,16 @@ model Transfers {
 }
 
 model User {
-  id             String     @id
+  id             String      @id
   name           String
-  document       String     @unique
-  email          String     @unique
+  document       String      @unique
+  email          String      @unique
   password       String
   can_transfer   Boolean
   created_at     DateTime
   Wallet         Wallet?
-  TransfersPayer Transfers? @relation("TransfersPayer")
-  TransfersPayee Transfers? @relation("TransfersPayee")
+  TransfersPayer Transfers[] @relation("TransfersPayer")
+  TransfersPayee Transfers[] @relation("TransfersPayee")
 
   @@map(name: "users")
 }
