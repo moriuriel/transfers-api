@@ -46,4 +46,10 @@ export class User {
   createdAt(): string | Date {
     return this.user.created_at
   }
+
+  documentLastFourDigits() {
+    this.user.document = this.user.document.substring(
+      this.user.document.length - 4
+    )
+  }
 }

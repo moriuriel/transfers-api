@@ -61,6 +61,9 @@ export class CreateUserUsecase implements ICreateUserUsecase {
       password: hashedPassword,
       can_transfer: userCanTransfer,
     })
+
+    user.documentLastFourDigits()
+
     await this.userRepo.create(user)
 
     const wallet = new Wallet({
