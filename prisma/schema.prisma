@@ -10,25 +10,39 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Transfers {
+  id         String   @id
+  userPayer  User?    @relation("TransfersPayer", fields: [payer_id], references: [id])
+  payer_id   String
+  userPayee  User?    @relation("TransfersPayee", fields: [payee_id], references: [id])
+  payee_id   String
+  amount     Decimal  @db.Decimal(10, 2)
+  created_at DateTime
+
+  @@map(name: "transfers")
+}
+
 model User {
-  id           String   @id
-  name         String
-  document     String   @unique
-  email        String   @unique
-  password     String
-  can_transfer Boolean
-  created_at   DateTime
-  wallet       Wallet   @relation(fields: [wallet_id], references: [id])
-  wallet_id    String
+  id             String      @id
+  name           String
+  document       String      @unique
+  email          String      @unique
+  password       String
+  can_transfer   Boolean
+  created_at     DateTime
+  Wallet         Wallet?
+  TransfersPayer Transfers[] @relation("TransfersPayer")
+  TransfersPayee Transfers[] @relation("TransfersPayee")
 
   @@map(name: "users")
 }
 
 model Wallet {
   id         String   @id
-  money      Decimal
+  money      Decimal  @db.Decimal(10, 2)
+  user       User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id    String   @unique
   created_at DateTime
-  User       User[]
 
   @@map(name: "wallets")
 }
