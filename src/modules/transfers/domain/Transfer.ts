@@ -1,17 +1,19 @@
+import { Decimal } from '@prisma/client/runtime'
+
 export interface ITransferProps {
   id: string
   payee_id: string
   payer_id: string
-  amount: number
-  created_at: string
+  amount: number | Decimal
+  created_at: string | Date
 }
 
 export interface ITransfer {
   id(): string
   payeeId(): string
   payerId(): string
-  amount(): number
-  createdAt(): string
+  amount(): number | Decimal
+  createdAt(): string | Date
 }
 
 export class Transfer implements ITransfer {
@@ -33,11 +35,11 @@ export class Transfer implements ITransfer {
     return this.transfer.payer_id
   }
 
-  amount(): number {
+  amount(): number | Decimal {
     return this.transfer.amount
   }
 
-  createdAt(): string {
+  createdAt(): string | Date {
     return this.transfer.created_at
   }
 }
