@@ -1,4 +1,5 @@
 import { UUID } from '@adapter/providers/id'
+import { IAuthorizerTransferHttp } from '@domain/http/AuthorizerTransfer'
 import { AppError } from '@infrastructure/http/errors'
 import { Wallet } from '@modules/users/domain'
 import {
@@ -20,17 +21,20 @@ export class CreateTransferUsecase implements ICreateTransferUsecase {
   private readonly transferRepo: ITransferRepository
   private readonly presenter: ICreateTransferPresenter
   private readonly walletRepo: IWalletRepository
+  private readonly authorizer: IAuthorizerTransferHttp
 
   constructor(
     userRepo: IUserRepository,
     transferRepo: ITransferRepository,
     presenter: ICreateTransferPresenter,
-    walletRepo: IWalletRepository
+    walletRepo: IWalletRepository,
+    authorizer: IAuthorizerTransferHttp
   ) {
     this.userRepo = userRepo
     this.presenter = presenter
     this.transferRepo = transferRepo
     this.walletRepo = walletRepo
+    this.authorizer = authorizer
   }
 
   async execute(input: ICreateTransferInput): Promise<ICreateTransferOutput> {
@@ -88,6 +92,14 @@ export class CreateTransferUsecase implements ICreateTransferUsecase {
 
     await this.walletRepo.updateMoney(payeeWallet)
 
+    const ok = await this.authorizer.authorized()
+    if (!ok) {
+      throw new AppError({
+        statusCode: StatusCodes.FORBIDDEN,
+        message: 'Unauthorized transfer',
+      })
+    }
+
     const transfer = new Transfer({
       id: new UUID().newUUID(),
       payee_id: input.payee_id,
@@ -102,8 +114,8 @@ export class CreateTransferUsecase implements ICreateTransferUsecase {
       transfer.id(),
       payee,
       payer,
-      transfer.amount(),
-      transfer.createdAt()
+      Number(transfer.amount()),
+      transfer.createdAt().toString()
     )
   }
 }
